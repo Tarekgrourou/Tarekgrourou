@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minimal Portfolio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <header class="intro">
+        <p class="eyebrow">Portfolio</p>
+        <h1>Tarek Grourou</h1>
+        <p class="subtitle">
+          Designer-minded developer building calm, useful digital products.
+        </p>
+      </header>
+
+      <section class="projects" aria-label="Projects">
+        <button class="project-card" data-project="0">
+          <span class="project-title">Quiet Notes</span>
+          <span class="project-meta">Productivity App</span>
+        </button>
+        <button class="project-card" data-project="1">
+          <span class="project-title">Studio Journal</span>
+          <span class="project-meta">Web Experience</span>
+        </button>
+        <button class="project-card" data-project="2">
+          <span class="project-title">North Atlas</span>
+          <span class="project-meta">Data Dashboard</span>
+        </button>
+      </section>
+    </main>
+
+    <section class="overlay" id="projectOverlay" hidden>
+      <article class="overlay-card" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+        <button class="close-btn" id="closeOverlay" aria-label="Close project details">×</button>
+        <p class="overlay-label">Selected Project</p>
+        <h2 id="overlayTitle"></h2>
+        <p id="overlayDescription"></p>
+      </article>
+    </section>
+
+    <script src="script.js"></script>
+  </body>
+</html>

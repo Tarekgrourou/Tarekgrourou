@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minimal Portfolio</title>
+    <style>
+      :root {
+        --bg: #f7f7f5;
+        --surface: #ffffff;
+        --text: #161616;
+        --muted: #666;
+        --line: #e7e7e3;
+        --accent: #111;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.55;
+      }
+
+      .page {
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 4rem 1.25rem 5rem;
+      }
+
+      header {
+        margin-bottom: 3rem;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: clamp(1.9rem, 4vw, 2.8rem);
+        letter-spacing: -0.02em;
+      }
+
+      .sub {
+        margin-top: 0.7rem;
+        color: var(--muted);
+        max-width: 62ch;
+      }
+
+      section + section {
+        margin-top: 2.8rem;
+      }
+
+      h2 {
+        font-size: 0.88rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin-bottom: 0.9rem;
+      }
+
+      .about {
+        max-width: 64ch;
+      }
+
+      .projects {
+        display: grid;
+        gap: 0.65rem;
+      }
+
+      .project {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        text-align: left;
+        padding: 1rem 1.05rem;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--surface);
+        color: var(--text);
+        cursor: pointer;
+        transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+      }
+
+      .project:hover,
+      .project:focus-visible {
+        transform: translateY(-1px);
+        border-color: #d8d8d3;
+        box-shadow: 0 10px 18px rgba(20, 20, 20, 0.06);
+        outline: none;
+      }
+
+      .project span {
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      footer {
+        margin-top: 3.2rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(8, 8, 8, 0.42);
+        display: none;
+        place-items: start center;
+        padding: 1rem;
+        z-index: 20;
+      }
+
+      .overlay[open] {
+        display: grid;
+      }
+
+      .modal {
+        width: min(680px, 100%);
+        margin-top: 2.2rem;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 1.2rem;
+        box-shadow: 0 22px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      .modal-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      #close {
+        border: 0;
+        background: #efefec;
+        color: #333;
+        border-radius: 999px;
+        width: 2rem;
+        height: 2rem;
+        cursor: pointer;
+      }
+
+      #modal-text {
+        margin-top: 0.8rem;
+        color: #3f3f3f;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header>
+        <h1>Tarek — Product Designer & Front-End Maker</h1>
+        <p class="sub">I build clear digital experiences with a focus on quiet visuals, useful interactions, and thoughtful details.</p>
+      </header>
+
+      <section>
+        <h2>About</h2>
+        <p class="about">I work at the intersection of design and code. My process is simple: understand people, reduce noise, and ship interfaces that feel effortless.</p>
+      </section>
+
+      <section>
+        <h2>Projects</h2>
+        <div class="projects">
+          <button class="project" data-title="Calm Notes" data-description="A distraction-free writing app for students and creators. I designed the interface and built a lightweight web app focused on speed and keyboard flow.">
+            Calm Notes <span>Product / UI</span>
+          </button>
+          <button class="project" data-title="Pulse Analytics" data-description="A minimalist analytics dashboard for small teams. It surfaces weekly trends with clean visual hierarchy and no unnecessary charts.">
+            Pulse Analytics <span>Dashboard</span>
+          </button>
+          <button class="project" data-title="Mono Storefront" data-description="A one-page commerce template for independent brands. Built for quick setup, mobile clarity, and concise storytelling.">
+            Mono Storefront <span>E-commerce</span>
+          </button>
+        </div>
+      </section>
+
+      <footer>
+        Available for freelance and full-time opportunities.
+      </footer>
+    </main>
+
+    <div class="overlay" id="overlay" aria-hidden="true">
+      <article class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-head">
+          <h3 id="modal-title">Project</h3>
+          <button id="close" aria-label="Close">×</button>
+        </div>
+        <p id="modal-text"></p>
+      </article>
+    </div>
+
+    <script>
+      const overlay = document.getElementById('overlay');
+      const modalTitle = document.getElementById('modal-title');
+      const modalText = document.getElementById('modal-text');
+      const closeBtn = document.getElementById('close');
+      const projects = document.querySelectorAll('.project');
+
+      function openProject(title, description) {
+        modalTitle.textContent = title;
+        modalText.textContent = description;
+        overlay.setAttribute('open', '');
+        overlay.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeProject() {
+        overlay.removeAttribute('open');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+
+      projects.forEach((project) => {
+        project.addEventListener('click', () => {
+          openProject(project.dataset.title, project.dataset.description);
+        });
+      });
+
+      closeBtn.addEventListener('click', closeProject);
+
+      overlay.addEventListener('click', (event) => {
+        if (event.target === overlay) closeProject();
+      });
+
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeProject();
+      });
+    </script>
+  </body>
+</html>
